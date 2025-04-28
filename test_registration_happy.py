@@ -13,22 +13,24 @@ driver = webdriver.Chrome(service=service_obj)
 
 # navigating to the provided link (sign in)
 driver.get("https://lemon-cliff-03b907503.6.azurestaticapps.net/")
-time.sleep(2)
 
+# waiting for the page load for the element to become clickable
+WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[text()='EN']")))
 # toggling to chosen language (EN)
 driver.find_element(By.XPATH, "//button[text()='EN']").click()
-time.sleep(2)
 
+# waiting for the Register link to be clickable
+WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[text()='Register']")))
 # clicking Register button to navigate to the Registration widget
 driver.find_element(By.XPATH, "//a[text()='Register']").click()
 
+# waiting for the first input field is visible
+WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, "//input[@aria-label='firstAndLastName']")))
 # entering First and Last Name
 driver.find_element(By.XPATH, "//input[@aria-label='firstAndLastName']").send_keys("Test")
-time.sleep(2)
 
 # entering Email
-driver.find_element(By.XPATH, "//input[@aria-label='email']").send_keys("testnirachun1208+04@gmail.com")
-time.sleep(2)
+driver.find_element(By.XPATH, "//input[@aria-label='email']").send_keys("testnirachun1208+06@gmail.com")
 
 
 # password section - I added eye toggle on and off before and after entering the password
@@ -36,8 +38,10 @@ time.sleep(2)
 password_eye_button = driver.find_element(By.XPATH, "(//div[@role='button' and @aria-label='eyeopen'])[1]")
 password_eye_button.click()
 time.sleep(1)
+
 driver.find_element(By.XPATH, "//input[@aria-label='password']").send_keys("Password321!")
-time.sleep(2)
+time.sleep(1)
+
 password_eye_button.click()
 time.sleep(1)
 
@@ -47,15 +51,15 @@ time.sleep(1)
 confirm_password_eye_button = driver.find_element(By.XPATH, "(//div[@role='button' and @aria-label='eyeopen'])[2]")
 confirm_password_eye_button.click()
 time.sleep(1)
+
 driver.find_element(By.XPATH, "//input[@aria-label='confirmPassword']").send_keys("Password321!")
-time.sleep(2)
+time.sleep(1)
+
 confirm_password_eye_button.click()
 time.sleep(1)
 
 # final registration
 driver.find_element(By.XPATH, "//button[@type='submit']").click()
-time.sleep(2)
-
 
 # final register confirmation
 # Wait until the URL is the expected full sign-in URL
