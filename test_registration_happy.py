@@ -6,18 +6,12 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-# adding the function to read the counter from the email_counter.txt file and increase it by one with each successful registration
-# for the easier script maintenance
-# if not needed - comment out and use driver.find_element(By.XPATH, "//input[@aria-label='email']").send_keys([enter email here]) instead of calling function
+# adding the function to use the current time in seconds so every time script is executed email is different so we won't get duplication error
+# madefor the easier script maintenance
+# if not needed - comment out and use driver.find_element(By.XPATH, "//input[@aria-label='email']").send_keys([enter email here]) instead of calling the function
 def get_next_email():
-    try:
-        with open("email_counter.txt", "r") as file:
-            counter = int(file.read().strip())
-    except FileNotFoundError:
-        counter = 1
-    email = f"testnirachun1208+{counter:02}@gmail.com"
-    with open("email_counter.txt", "w") as file:
-        file.write(str(counter+1))
+    timestamp = int(time.time())  # Get current time in seconds
+    email = f"testnirachun1208+{timestamp}@gmail.com"
     return email
 
 
@@ -44,7 +38,7 @@ WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, "//i
 driver.find_element(By.XPATH, "//input[@aria-label='firstAndLastName']").send_keys("Test")
 
 
-# calling the above written function to "generate" new email with each successful iteration
+# calling the above written function to generate new email based on current time in seconds
 email = get_next_email()
 driver.find_element(By.XPATH, "//input[@aria-label='email']").send_keys(email)
 
