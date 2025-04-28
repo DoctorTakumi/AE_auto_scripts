@@ -6,6 +6,20 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+# adding the function to read the counter from the email_counter.txt file and increase it by one with each successful registration
+# for the easier script maintenance
+# if not needed - comment out and use driver.find_element(By.XPATH, "//input[@aria-label='email']").send_keys([enter email here]) instead of calling function
+def get_next_email():
+    try:
+        with open("email_counter.txt", "r") as file:
+            counter = int(file.read().strip())
+    except FileNotFoundError:
+        counter = 1
+    email = f"testnirachun1208+{counter:02}@gmail.com"
+    with open("email_counter.txt", "w") as file:
+        file.write(str(counter+1))
+    return email
+
 
 # relative path for the chromedriver
 service_obj = Service ("./chromedriver.exe")
@@ -29,8 +43,13 @@ WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, "//i
 # entering First and Last Name
 driver.find_element(By.XPATH, "//input[@aria-label='firstAndLastName']").send_keys("Test")
 
-# entering Email
-driver.find_element(By.XPATH, "//input[@aria-label='email']").send_keys("testnirachun1208+06@gmail.com")
+
+# calling the above written function to "generate" new email with each successful iteration
+email = get_next_email()
+driver.find_element(By.XPATH, "//input[@aria-label='email']").send_keys(email)
+
+# entering Email - use if function above is not needed
+# driver.find_element(By.XPATH, "//input[@aria-label='email']").send_keys("testnirachun1208+06@gmail.com")
 
 
 # password section - I added eye toggle on and off before and after entering the password
