@@ -80,3 +80,6 @@ WebDriverWait(driver, 10).until(EC.url_to_be("https://lemon-cliff-03b907503.6.az
 
 # Assert that the current URL is exactly correct
 assert driver.current_url == "https://lemon-cliff-03b907503.6.azurestaticapps.net/auth/sign-in"
+
+
+driver.quit()
